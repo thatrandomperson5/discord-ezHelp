@@ -126,11 +126,12 @@ class dynHelp(commands.MinimalHelpCommand):
         formatter = HelpPageSource(all_commands, self, per_page=self.ez_per_page, callback=self.on_main)
         menu = MyMenuPages(formatter, delete_message_after=self.ez_delete_message_after, timeout=self.ez_timeout)
         await menu.start(self.context)
-    async def send_cog_help(self, mapping):
+    async def send_cog_help(self, cog):
         if not self.ez_cmds:
-            all_commands = list(chain.from_iterable(mapping.values()))
+            all_commands = list(chain.from_iterable(cog.get_commands))
+            all_commands.insert(0, cog.name)
         else:
-            all_commands = self.ez_cmds(mapping)
+            all_commands = self.ez_cmds(cog)
         formatter = HelpPageSource(all_commands, self, per_page=self.ez_per_page)
         menu = MyMenuPages(formatter, delete_message_after=self.ez_delete_message_after, timeout=self.ez_timeout)
         await menu.start(self.context)
