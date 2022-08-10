@@ -1,3 +1,4 @@
+
 from discord.ext import menus
 import discord
 from discord.ext import commands
@@ -64,6 +65,7 @@ class MyMenuPages(discord.ui.View, menus.MenuPages):
     
 class HelpPageSource(menus.ListPageSource):
     def __init__(self, data, helpcommand, *, per_page=6, callback=None):
+        
         super().__init__(data, per_page=per_page)
         self.helpcommand = helpcommand
         self.cb = callback
@@ -72,6 +74,7 @@ class HelpPageSource(menus.ListPageSource):
     
     
     async def format_page(self, menu, entries):
+        print(entries)
         page = menu.current_page
         max_page = self.get_max_pages()
         starting_number = page * self.per_page + 1
@@ -92,6 +95,7 @@ class Help(commands.MinimalHelpCommand):
             all_commands = list(chain.from_iterable(mapping.values()))
         else:
             all_commands = self.ez_cmds(mapping)
+        
         formatter = HelpPageSource(all_commands, self, per_page=self.ez_per_page)
         menu = MyMenuPages(formatter, delete_message_after=self.ez_delete_message_after, timeout=self.ez_timeout)
         await menu.start(self.context)
@@ -104,8 +108,8 @@ class cogHelp(commands.MinimalHelpCommand):
         super().__init__(**kwargs)
     async def send_cog_help(self, cog):
         if not self.ez_cmds:
-            all_commands = list(chain.from_iterable(cog.get_commands()))
-            all_commands.insert(0, cog.name)
+            all_commands = cog.get_commands()
+            all_commands.append(cog.qualified_name)
         else:
             all_commands = self.ez_cmds(cog)
         formatter = HelpPageSource(all_commands, self, per_page=self.ez_per_page)
@@ -128,8 +132,8 @@ class dynHelp(commands.MinimalHelpCommand):
         await menu.start(self.context)
     async def send_cog_help(self, cog):
         if not self.ez_cmds:
-            all_commands = list(chain.from_iterable(cog.get_commands()))
-            all_commands.insert(0, cog.name)
+            all_commands = cog.get_commands()
+            all_commands.append(cog.qualified_name)
         else:
             all_commands = self.ez_cmds(cog)
         formatter = HelpPageSource(all_commands, self, per_page=self.ez_per_page)
