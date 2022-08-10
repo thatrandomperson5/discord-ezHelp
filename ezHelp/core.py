@@ -104,7 +104,7 @@ class cogHelp(commands.MinimalHelpCommand):
         super().__init__(**kwargs)
     async def send_cog_help(self, cog):
         if not self.ez_cmds:
-            all_commands = list(chain.from_iterable(cog.get_commands))
+            all_commands = list(chain.from_iterable(cog.get_commands()))
             all_commands.insert(0, cog.name)
         else:
             all_commands = self.ez_cmds(cog)
@@ -128,7 +128,7 @@ class dynHelp(commands.MinimalHelpCommand):
         await menu.start(self.context)
     async def send_cog_help(self, cog):
         if not self.ez_cmds:
-            all_commands = list(chain.from_iterable(cog.get_commands))
+            all_commands = list(chain.from_iterable(cog.get_commands()))
             all_commands.insert(0, cog.name)
         else:
             all_commands = self.ez_cmds(cog)
