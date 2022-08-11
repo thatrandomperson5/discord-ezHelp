@@ -34,13 +34,13 @@ You should get something like this:
 ## Advanced usage:
 ```py
 
-from ezHelp.utils import cogSplit #cogSplit to give you cog info
+from ezHelp.utils import cogSplit #cogSplit to give you cog info that is able to be paginated
 import ezHelp
 
 ...
 
 class disHelp(ezHelp.dynHelp):
-    def on_page(self, commands, page, last_page):
+    def on_page(self, commands, page, last_page):  #On cog command
         commands = list(commands)
         embed = rqEmbed(self.context, title=f"Global Chan {commands.pop(len(commands)-1)[1]} [{page}/{last_page}]")
         
@@ -50,7 +50,7 @@ class disHelp(ezHelp.dynHelp):
             
             embed.add_field(name=f"{index}) {self.get_command_signature(command)}", value=command.short_doc,inline=False)
         return embed
-    def on_main(self, commands, page, last_page):
+    def on_main(self, commands, page, last_page): #On main help
         #if self.no_category
         embed = rqEmbed(self.context, title=f"Global Chan [{page}/{last_page}]")
         
@@ -58,7 +58,7 @@ class disHelp(ezHelp.dynHelp):
         name = None
         value = None
         print(commands)
-        for x in commands:
+        for x in commands:  #Extracting data, then adding to the embed
             
             index = x[0]
             x = x[1]
@@ -77,5 +77,8 @@ class disHelp(ezHelp.dynHelp):
         embed.add_field(name=name, value=value, inline=False)
         return embed
         
-bot.help_command = disHelp(no_category = 'Informational', commands=cogSplit)
+bot.help_command = disHelp(no_category = 'Informational', commands=cogSplit)  #Use the cogsplit pre-processer
 ```
+You should get somehing like this:
+![62316029-33FF-44E0-992C-437F14DBE36E](https://user-images.githubusercontent.com/94306853/184146949-26a340f1-72ed-4aee-b6e2-7b7eb709b049.jpeg)
+![BC6D2972-7B28-4E04-BFBC-370C7FD012A2](https://user-images.githubusercontent.com/94306853/184146953-ac1efce8-4f6d-475f-a0cc-2f008026f42c.jpeg)
