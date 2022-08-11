@@ -74,7 +74,7 @@ class HelpPageSource(menus.ListPageSource):
     
     
     async def format_page(self, menu, entries):
-        print(entries)
+        
         page = menu.current_page
         max_page = self.get_max_pages()
         starting_number = page * self.per_page + 1
