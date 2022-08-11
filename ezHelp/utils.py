@@ -5,7 +5,7 @@ def onmap(map):
     for x, y in map.items():
         out.append({"type": "cog", "value": x})
         for z in y:
-            out.append({"type": "command", "value": x})
+            out.append({"type": "command", "value": z})
     return out
 def oncog(cog):
     all_commands = cog.get_commands()
